@@ -39,7 +39,10 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
 - ### utils - directory that contains common utils related files
 
     * /common
-        * scenarios.generator.ts - read all tests and save all comments as txt files into scenarios directory
+        * scenarios.generator.ts - read all tests and save all comments as txt files into scenarios directory. To do that run command:     
+            ```bash
+            npm run generate-scenarios
+            ```
         * test.link.helper.ts - helper that help to populate results into TestLink
 
 - ### environments.ts - file with different environments variables
