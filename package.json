@@ -1,0 +1,27 @@
+{
+  "name": "playwright.typescript.template",
+  "version": "1.0.0",
+  "description": "Simple Template For Playwright Template Written In Typescript With API/UI Tests Examples",
+  "main": "",
+  "scripts": {
+    "test": "npx playwright test",
+    "api-tests": "npx playwright test --grep @API --config=playwright.config.ts",
+    "ui-tests": "npx playwright test --grep @UI --config=playwright.config.ts",
+    "all-tests-sanity": "npx playwright test --grep @Sanity --config=playwright.config.ts",
+    "all-tests": "npx playwright test --config=playwright.config.ts",
+    "test:parallel": "npx playwright test --grep @Sanity --project=Chrome",
+    "test:serial": "npx playwright test --grep @Sanity --workers=1 --project=Chrome",
+    "api-tests:debug": "npx cross-env ENV=qa playwright test --grep @API --project=Chrome --debug",
+    "ui-tests:debug": "npx cross-env ENV=qa playwright test --grep @UI --project=Chrome --debug",
+    "generate-scenarios": "npx ts-node ./utils/scenarios.generator.ts"
+  },
+  "author": "Viktor Khramov",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.1",
+    "@reportportal/agent-js-playwright": "^5.1.6",
+    "@types/node": "^20.11.14",
+    "testlink-xmlrpc": "^2.1.0",
+    "ts-node": "^10.9.2"
+  }
+}
