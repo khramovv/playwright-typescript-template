@@ -14,7 +14,7 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
     npm run all-tests
     ```
 
-- Open Demo Report Portal: https://demo.reportportal.io/ ( <i>default/1q2w3e</i> )
+- Open Demo Report Portal: https://demo.reportportal.io ( <i>default/1q2w3e</i> )
 - Find latest Launch with name "Playwright TypeScript Test Launch#N" and view results
 
 ## What Is The Structure?
@@ -33,7 +33,7 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
 
     * /api
     * /base
-    * /fixtures - playwright [fixtures](https://playwright.dev/docs/test-fixtures/) for api and ui tests
+    * /fixtures - playwright [fixtures](https://playwright.dev/docs/test-fixtures) for api and ui tests
     * /ui
 
 - ### utils - directory that contains common utils related files
@@ -47,7 +47,7 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
 
 - ### environments.ts - file with different environments variables
 
-- ### playwright.config.ts - cfile with playwright configuration
+- ### playwright.config.ts - file with playwright configuration
  
 ## License
 
