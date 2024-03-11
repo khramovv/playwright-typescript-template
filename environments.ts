@@ -13,7 +13,7 @@ export const envs: Config = {
         uiAdminPassword: "1q2w3e",
         apiUrl: "https://dummyjson.com/",
         adminUserName: "kminchelle",
-        adminPassword: "0lelplR"
+        adminPassword: "0lelplR",
     },
     dev: {
         url: "https://dev.web.ui.url/",

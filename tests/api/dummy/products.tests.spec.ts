@@ -2,6 +2,8 @@ import { apiTests as test } from 'tests/base/api.base.tests';
 import { expect } from '@playwright/test';
 import { validateStatusCode } from 'core.api/utils/assertions';
 import { Product } from 'core.api/contracts/entities/product';
+import { TestLinkHelper } from 'utils/common/test.link.helper';
+import { TestLinkConfig } from 'playwright.config';
 
 /** 
  * ============================================
@@ -14,12 +16,25 @@ test.describe('Products Tests @API @Products', async () => {
     // --- Here you can do some preparation steps ---
   });
 
-  test.afterEach(async ({ productsClient }) => {
+  test.afterEach(async ({ productsClient, testLinkClient }) => {
     // --- Here you can do some clean up steps ---
   });
 
   /**
-   * Test Name: 'Post Product'
+   * Prerequisites Before All: Get TestLink Integration Data
+   */
+  test.beforeAll(async ({ testLinkClient }) => {
+    // --- Here you can do some global preparation steps ---
+    TestLinkConfig.plan = 'API Products Test Plan';
+    TestLinkHelper.getTestLinkIntegrationData();
+  });
+
+  test.afterAll(async ({ testLinkClient }) => {
+    // --- Here you can do some global clean up steps ---
+  });
+
+  /**
+   * Test Name: '[TC-1] Post Product'
       Steps:
       1. Create Product via POST /product endpoint with body {
             title: "iPhone 100",
@@ -36,7 +51,7 @@ test.describe('Products Tests @API @Products', async () => {
       3. Verify that id in response message is not null
       4. Verify that return response message is equal to expected (similar like in step 1 + id property)
     */
-  test('Post Product @Sanity', async ({ productsClient }) => {
+  test('[TC-1] Post Product @Sanity', async ({ productsClient }) => {
       const body: Product = {
           title: 'iPhone 100',
           description: 'An apple mobile which is nothing like apple',
@@ -62,13 +77,13 @@ test.describe('Products Tests @API @Products', async () => {
   });
 
   /**
-   * Test Name: 'Get Products'
+   * Test Name: '[TC-2] Get Products'
       Steps:
       1. Get Products via GET /products endpoint
       2. Verify that status code is 200
       3. Verify that Products array length in response message is greater than 0
     */
-  test('Get Products @Sanity', async ({ productsClient}) => {
+  test('[TC-2] Get Products @Sanity', async ({ productsClient}) => {
     const response = await productsClient.getProducts();
 
     await validateStatusCode(response, 200);

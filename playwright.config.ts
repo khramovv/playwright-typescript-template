@@ -1,16 +1,16 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig } from '@playwright/test';
 import { getEnv } from './environments';
 
 const ENV = process.env.ENV;
 
 if (!ENV || ![`qa`, `dev`, `stage`].includes(ENV)) {
-    console.log(`Please provide a correct environment value like "npx cross-env ENV=qa|dev|stage"`);
-    console.log('Default env will be used. qa!');
+    console.debug(`Please provide a correct environment value like "npx cross-env ENV=qa|dev|stage"`);
+    console.debug('Default env will be used. qa!');
     process.env.ENV = 'qa';
   }
 
 const ReportPortalConfig = {
-    apiKey: 'playwright-typescript-template_WBGJ087BSnGXcybY3Ersu0CQCla_UpL3zCFBA1GPB2ANFQO6f-NLnQ8m7s0-OvVn',
+    apiKey: 'playwright-typescript-template_dh2TnKbyQQKKxmA2KJRAmAMnONjBwxAXWSP_wjUAf5DxLug0dcronbNtNOfU1W3a',
     endpoint: 'https://demo.reportportal.io/api/v1',
     project: 'default_personal',
     launch: 'Playwright TypeScript Test Launch',
@@ -28,7 +28,15 @@ const ReportPortalConfig = {
     uploadTrace: false,
     uploadVideo: false,
     includeTestSteps: true,
-    debug: true
+    debug: false
+  };
+
+export const TestLinkConfig = {
+    apiResrUrl: 'http://localhost/lib/api/rest/v2/',
+    apiKey: '1234567890',
+    project: process.env.TESTLINK_TEST_PROJECT ? process.env.TESTLINK_TEST_PROJECT : 'Automation Test Project',
+    plan: process.env.TESTLINK_TEST_PLAN ? process.env.TESTLINK_TEST_PLAN : 'Automation Test Plan',
+    build: process.env.TESTLINK_BUILD ? process.env.TESTLINK_BUILD : 'Automation Build',
   };
 
 /**
@@ -87,6 +95,10 @@ const config: PlaywrightTestConfig = {
   },
 
   //grep: [new RegExp(process.env.TAGS)],
+
+  globalSetup: require.resolve('./tests/global.setup'),
+
+  globalTeardown: require.resolve('./tests/global.teardown'),
 
   /* Configure projects for major browsers */
   projects: [

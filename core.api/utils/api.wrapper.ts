@@ -26,7 +26,7 @@ export class ApiWrapper {
     }
 
     public static async request(context: APIRequestContext, url: string, method: RequestMethods, options?: any): Promise<APIResponse> {
-        const message: string = `{ Method: '${method}', Url: ${getEnv().apiUrl}${url}, Options: ${JSON.stringify(options)} }`;
+        const message: string = `{ Method: '${method}', Url: ${url.includes('http') ? '' : getEnv().apiUrl}${url}, Options: ${JSON.stringify(options)} }`;
 
         return await test.step(message, async () => {
             console.debug(message);

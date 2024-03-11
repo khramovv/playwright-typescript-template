@@ -10,7 +10,7 @@ const scenariosFolderName: string = "scenarios"
 let files: string[]  = [];
 
 function getFiles(dirPath: string) {
-    console.log(`Reading all files from directory ${dirPath} and filter by name '*.${testsSpecsSufix}'`);
+    console.debug(`Reading all files from directory ${dirPath} and filter by name '*.${testsSpecsSufix}'`);
 
     readdirSync(dirPath).forEach(File => {
 
@@ -20,7 +20,7 @@ function getFiles(dirPath: string) {
             return getFiles(absolutePth);
         }
         else if(absolutePth.includes(testsSpecsSufix)) {
-            console.log(absolutePth);
+            console.debug(absolutePth);
 
             return files.push(absolutePth);
         }
@@ -29,7 +29,7 @@ function getFiles(dirPath: string) {
 
 function parseFiles(files: string[]) {
 
-    console.log(`Parse files: in each file find text between /** and */ and save it into the txt file`);
+    console.debug(`Parse files: in each file find text between /** and */ and save it into the txt file`);
 
     files.forEach(file => {
         var specFileName = file.replace(/^.*[\\/]/, '');
@@ -47,14 +47,14 @@ function parseFiles(files: string[]) {
         });
 
         if (!existsSync(`./${scenariosFolderName}`)) {
-            console.log(`Create folder '${scenariosFolderName}' as it does not exist`);
+            console.debug(`Create folder '${scenariosFolderName}' as it does not exist`);
 
             mkdirSync(`./${scenariosFolderName}`);
         }
 
         let scenariosSuitePath: string = `./${scenariosFolderName}/${specFileScenariosName}`;
 
-        console.log(`Save spec '${specFileName}' scenarios into the file by path ${scenariosSuitePath}`);
+        console.debug(`Save spec '${specFileName}' scenarios into the file by path ${scenariosSuitePath}`);
 
         writeFileSync(scenariosSuitePath, suiteCases, { flag: 'w' });
     });

@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { baseTests as base } from 'tests/base/base.tests';
 import { combineFixtures } from 'tests/fixtures/combine.fixtures'
 import { authenticationFixture, AuthenticationFixture } from 'tests/fixtures/api/authentication.api';
 import { productsApiFixture, ProductsApiFixture } from 'tests/fixtures/api/products.api';

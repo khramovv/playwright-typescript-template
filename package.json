@@ -15,7 +15,7 @@
     "test:serial": "npx playwright test --grep @Sanity --workers=1 --project=Chrome",
     "api-tests:debug": "npx playwright test --grep @API --project=Chrome --debug",
     "ui-tests:debug": "npx playwright test --grep @UI --project=Chrome --debug",
-    "generate-scenarios": "npx ts-node ./utils/scenarios.generator.ts"
+    "generate-scenarios": "npx ts-node ./utils/common/scenarios.generator.ts"
   },
   "author": "Viktor Khramov",
   "license": "ISC",
@@ -23,7 +23,6 @@
     "@playwright/test": "^1.41.1",
     "@reportportal/agent-js-playwright": "^5.1.6",
     "@types/node": "^20.11.14",
-    "testlink-xmlrpc": "^2.1.0",
     "ts-node": "^10.9.2"
   }
 }
