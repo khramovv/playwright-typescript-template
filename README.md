@@ -58,6 +58,24 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
         ```bash
         npm run generate-scenarios
         ```
+- ### How to provide TestLink data as env variables via cpmmand line?
+    - You can set specific TestLink Project/Test Plan/Build via command line:
+        ```bash
+        npx cross-env TESTLINK_TEST_PROJECT="Automation Test Project" TESTLINK_TEST_PLAN="Automation Test Plan" TESTLINK_BUILD="Automation Build" playwright test --grep "@API"
+        ```
+    - You can set specific TestLink Project/Test Plan/Build via code in test suite:
+        ```js
+          /**
+            * Prerequisites Before All: 
+            * Get TestLink Integration Data
+            */
+            test.beforeAll(async ({ }) => {
+                // --- Here you can do some global preparation steps ---
+                TestLinkConfig.plan = 'UI Dashboards Test Plan';
+                TestLinkConfig.build = 'UI Dashboards Build';
+                TestLinkHelper.getTestLinkIntegrationData();
+            });
+        ```
 
 ## License
 
