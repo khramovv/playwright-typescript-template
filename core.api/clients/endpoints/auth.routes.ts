@@ -1,3 +1,3 @@
-export enum AuthenticationAPIRoutes {
-    AuthLogin = 'auth/login'
+export class AuthenticationAPIRoutes {
+  public static AuthLogin = 'auth/login';
   }

@@ -22,6 +22,14 @@ test.describe('Dashboards Tests @Sanity @UI', async () => {
     TestLinkHelper.getTestLinkIntegrationData();
   });
 
+    /**
+   * Clean Up After All: Print Total Info
+   */
+    test.afterAll(async ({}) => {
+      // --- Here you can do some global clean up steps ---
+      TestLinkHelper.printTotalInfo();
+    });
+    
   /**
    * Prerequisites to each test:
    * Login into system with prepared user

@@ -29,7 +29,7 @@ export const baseTests =
         console.debug(`Test Case ID: ${testCaseId}`);
 
         let testCase = await TestLinkHelper.getTestCaseByIdFromProject(testCaseId, TestLinkHelper.testProject);
-        TestLinkHelper.setTestCaseStatus(currentTestInfo, testCase);
+        await TestLinkHelper.setTestCaseStatus(currentTestInfo, testCase);
       },
       { auto: true },
     ],

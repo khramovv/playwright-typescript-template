@@ -10,7 +10,7 @@ if (!ENV || ![`qa`, `dev`, `stage`].includes(ENV)) {
   }
 
 const ReportPortalConfig = {
-    apiKey: 'playwright-typescript-template_dh2TnKbyQQKKxmA2KJRAmAMnONjBwxAXWSP_wjUAf5DxLug0dcronbNtNOfU1W3a',
+    apiKey: 'playwright-typescript-template_ORI-pTtiRXaT8L284IfZq8mXPx7hvOQzLcy8skDx--BYFfPCiCtbNjDJRsc0kK8i',
     endpoint: 'https://demo.reportportal.io/api/v1',
     project: 'default_personal',
     launch: 'Playwright TypeScript Test Launch',
@@ -96,9 +96,9 @@ const config: PlaywrightTestConfig = {
 
   //grep: [new RegExp(process.env.TAGS)],
 
-  globalSetup: require.resolve('./tests/global.setup'),
+  globalSetup: require.resolve('./tests/base/global.setup'),
 
-  globalTeardown: require.resolve('./tests/global.teardown'),
+  globalTeardown: require.resolve('./tests/base/global.teardown'),
 
   /* Configure projects for major browsers */
   projects: [

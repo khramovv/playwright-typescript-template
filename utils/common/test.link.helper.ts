@@ -12,6 +12,19 @@ export class TestLinkHelper {
 
     public static build: { name: string, id: string };
 
+    public static totalInfo: [{
+        TestCaseName: string,
+        Status: string,
+        TestLink:
+        {
+            TestProject: { id: string, prefix: string },
+            TestPlan: { id: string },
+            Build: { id: string },
+            TestCase: { name: string, tc_external_id: string }
+        },
+        ErrorMessage: string
+    }?] = [];
+
     public static getStatusFromTestInfo(testInfo: TestInfo): string {
         switch (testInfo.status) {
             case "passed": {
@@ -113,30 +126,45 @@ export class TestLinkHelper {
         build: { id: string } = this.build): Promise<void> {
         const testLinkClient = await TestLinkApiClient.getTestLinkApiClient();
 
+        const testCaseInfo = {
+            TestCaseName: testInfo.title,
+            Status: testInfo.status,
+            TestLink:
+            {
+                TestProject: testProject,
+                TestPlan: testPlan,
+                Build: build,
+                TestCase: testCase
+            },
+            ErrorMessage: ''
+        };
+
         if (!testProject) {
-            console.debug(`Test Project is not set. Skipping integration with TestLink...`)
-            return;
+            testCaseInfo.ErrorMessage += `Test Project is not set. Skipping integration with TestLink; `;
         }
 
         if (!testPlan) {
-            console.debug(`Test Plan is not set. Skipping integration with TestLink...`)
-            return;
+            testCaseInfo.ErrorMessage += `Test Plan is not set. Skipping integration with TestLink; `;
         }
 
         if (!build) {
-            console.debug(`Build is not set. Skipping integration with TestLink...`)
-            return;
+            testCaseInfo.ErrorMessage += `Build is not set. Skipping integration with TestLink; `;
         }
 
         if (!testCase) {
-            console.debug(`Test Case is not set. Skipping integration with TestLink...`)
+            testCaseInfo.ErrorMessage += `Test Case is not set. Skipping integration with TestLink; `;
+        }
+
+        if(testCaseInfo.ErrorMessage) {
+            console.debug(testCaseInfo.ErrorMessage);
+            this.totalInfo.push(testCaseInfo);
             return;
         }
 
         // ------------------------------------------------ Set Test Case Status ------------------------------------------------
         let note = `Test Case ${testCase.name} finished with status ${testInfo.status}.${testInfo.status == 'failed'
-                ? `\r\n${testInfo.error.message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '').replace(/(\r\n|\n|\r)/gm, ' ')}`
-                : ''
+            ? `\r\n${testInfo.error.message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '').replace(/(\r\n|\n|\r)/gm, ' ')}`
+            : ''
             }`;
         let executionResponse = await testLinkClient.postExecutions(
             testProject.id,
@@ -146,7 +174,15 @@ export class TestLinkHelper {
             note,
             TestLinkHelper.getStatusFromTestInfo(testInfo)
         );
-        await validateStatusCode(executionResponse, 200);
+
+        if(executionResponse.status() !== 200) {
+            testCaseInfo.ErrorMessage = `Error while setting status for test case: ${await executionResponse.text()}`;
+        }
+
+        this.totalInfo.push(testCaseInfo);
+
+        // TODO: uncomment if you want to fail test in tear down if integration with TestLink failed
+        // await validateStatusCode(executionResponse, 200);
     }
 
     public static async getTestLinkIntegrationData(): Promise<void> {
@@ -166,5 +202,21 @@ export class TestLinkHelper {
         console.debug(`Build: ${JSON.stringify(build)}`);
 
         console.debug(`TestLink Integration Data retrieved successfully`);
+    }
+
+    public static printTotalInfo(): void {
+        console.debug(`TestLink Total Info:`);
+        const flattenedData = this.totalInfo.map((info) => {
+            return {
+                TestCaseName: info.TestCaseName,
+                Status: info.Status,
+                TestProjectId: info.TestLink.TestProject?.id,
+                TestPlanId: info.TestLink.TestPlan?.id,
+                BuildId: info.TestLink.Build?.id,
+                TestCaseId: info.TestLink.TestCase?.tc_external_id,
+                ErrorMessage: info.ErrorMessage
+            }
+        });
+        console.table(flattenedData);
     }
 }

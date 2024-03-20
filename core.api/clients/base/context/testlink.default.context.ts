@@ -2,14 +2,12 @@ import { request } from '@playwright/test';
 import { TestLinkConfig } from 'playwright.config';
 
 export const getDefaultAPIContext = async () => {
-console.debug(`TestLink Base API RUL: ${TestLinkConfig.apiResrUrl}`);
-let baseUrl = TestLinkConfig.apiResrUrl;
-return await request.newContext({
-    baseURL: baseUrl,
+  return await request.newContext({
+    baseURL: TestLinkConfig.apiResrUrl,
     extraHTTPHeaders: {
       APIKEY: TestLinkConfig.apiKey,
       Accept: '*/*',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }
-  })
-}; 
+  });
+};

@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { validateStatusCode } from 'core.api/utils/assertions';
 import { Product } from 'core.api/contracts/entities/product';
 import { TestLinkHelper } from 'utils/common/test.link.helper';
+import { TestLinkConfig } from 'playwright.config';
 
 /** 
  * ============================================
@@ -22,13 +23,19 @@ test.describe('Products Tests @API @Products', async () => {
   /**
    * Prerequisites Before All: Get TestLink Integration Data
    */
-  test.beforeAll(async ({ testLinkClient }) => {
+  test.beforeAll(async ({}) => {
     // --- Here you can do some global preparation steps ---
+    TestLinkConfig.plan = 'API Products Test Plan';
+    TestLinkConfig.build = 'Automation Build';
     TestLinkHelper.getTestLinkIntegrationData();
   });
 
-  test.afterAll(async ({ testLinkClient }) => {
+  /**
+   * Clean Up After All: Print Total Info
+   */
+  test.afterAll(async ({}) => {
     // --- Here you can do some global clean up steps ---
+    TestLinkHelper.printTotalInfo();
   });
 
   /**

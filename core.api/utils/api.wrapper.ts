@@ -1,64 +1,65 @@
-import { test, APIRequestContext, APIResponse } from '@playwright/test';
+import { test, APIResponse } from '@playwright/test';
+import { APIClient } from 'core.api/clients/base/api.client';
 import { RequestMethods } from 'core.api/enums/request.methods';
-import { getEnv } from 'environments';
 
 export class ApiWrapper {
-    constructor() {}
-  
-    public static async get(context: APIRequestContext, url: string, options?: any): Promise<APIResponse> {
-        return this.request(context, url, RequestMethods.Get, options);
-    }
-  
-    public static async post(context: APIRequestContext, url: string, options?: any): Promise<APIResponse> {
-        return this.request(context, url, RequestMethods.Post, options);
+    constructor() { }
+
+    public static async get(client: APIClient, url: string, options?: any): Promise<APIResponse> {
+        return this.request(client, url, RequestMethods.Get, options);
     }
 
-    public static async put(context: APIRequestContext, url: string, options?: any): Promise<APIResponse> {
-        return this.request(context, url, RequestMethods.Put, options);
+    public static async post(client: APIClient, url: string, options?: any): Promise<APIResponse> {
+        return this.request(client, url, RequestMethods.Post, options);
     }
 
-    public static async delete(context: APIRequestContext, url: string, options?: any): Promise<APIResponse> {
-        return this.request(context, url, RequestMethods.Delete, options);
+    public static async put(client: APIClient, url: string, options?: any): Promise<APIResponse> {
+        return this.request(client, url, RequestMethods.Put, options);
     }
 
-    public static async patch(context: APIRequestContext, url: string, options?: any): Promise<APIResponse> {
-        return this.request(context, url, RequestMethods.Patch, options);
+    public static async delete(client: APIClient, url: string, options?: any): Promise<APIResponse> {
+        return this.request(client, url, RequestMethods.Delete, options);
     }
 
-    public static async request(context: APIRequestContext, url: string, method: RequestMethods, options?: any): Promise<APIResponse> {
-        const message: string = `{ Method: '${method}', Url: ${url.includes('http') ? '' : getEnv().apiUrl}${url}, Options: ${JSON.stringify(options)} }`;
+    public static async patch(client: APIClient, url: string, options?: any): Promise<APIResponse> {
+        return this.request(client, url, RequestMethods.Patch, options);
+    }
+
+    public static async request(client: APIClient, url: string, method: RequestMethods, options?: any): Promise<APIResponse> {
+
+        const message: string = `{ Method: '${method}', Url: ${url.includes('http') ? url : client.baseUrl + url}, Options: ${JSON.stringify(options)} }`;
 
         return await test.step(message, async () => {
             console.debug(message);
 
             let response: APIResponse | any = undefined;
 
-            switch (method){
+            switch (method) {
                 case RequestMethods.Get: {
-                    response = await context.get(url, options);
+                    response = await client.context.get(url, options);
                     break;
                 }
                 case RequestMethods.Post: {
-                    response = await context.post(url, options);
+                    response = await client.context.post(url, options);
                     break;
                 }
                 case RequestMethods.Put: {
-                    response = await context.put(url, options);
+                    response = await client.context.put(url, options);
                     break;
                 }
                 case RequestMethods.Delete: {
-                    response = await context.delete(url, options);
+                    response = await client.context.delete(url, options);
                     break;
                 }
                 case RequestMethods.Patch: {
-                    response = await context.patch(url, options);
+                    response = await client.context.patch(url, options);
                     break;
                 }
             }
 
-            console.debug(`{ Status: ${response.status()}, ResponseMessage: ${await response.text()}, Headers: ${response.headers()} }`);
+            console.debug(`{ Status: ${response.status()}, ResponseMessage: ${await response.text()}, Headers: ${JSON.stringify(response.headers())} }`);
 
             return response;
         });
     }
-  }
+}
