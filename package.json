@@ -8,6 +8,7 @@
     "testlink-custom-data-api-tests": "npx cross-env TESTLINK_TEST_PROJECT=\"Automation Test Project\" TESTLINK_TEST_PLAN=\"Automation Test Plan\" TESTLINK_BUILD=\"Automation Build\" playwright test --grep \"@API\"",
     "api-tests": "npx playwright test --grep @API",
     "ui-tests": "npx playwright test --grep @UI",
+    "all-tests": "npx playwright test",
     "all-tests-sanity:qa": "npx playwright test --grep @Sanity",
     "all-tests:qa": "npx cross-env ENV=qa playwright test",
     "all-tests:dev": "npx cross-env ENV=dev playwright test",
