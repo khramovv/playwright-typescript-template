@@ -76,6 +76,15 @@ Simple Template For Playwright Template Written In Typescript With API/UI Tests 
                 TestLinkHelper.getTestLinkIntegrationData();
             });
         ```
+- ### How to review TestLink integration statistic and analyze errors during integration process?
+    - After each run in root of project file 'TestLinkIntegrationResults.txt' will be generated with TestLink integration statistic:
+    ![alt text](image.png)
+    - Same table will in in Console output after each spec file execution
+    - Requests will be logged into Console and ReportPortal as well
+    - If integration will fail it will not fail test execution. To fail execution in test tear down you need to uncomment code in 'utils\common\test.link.helper.ts' for method 'setTestCaseStatus':
+        ```js
+        await validateStatusCode(executionResponse, 200);
+        ```
 
 ## License
 

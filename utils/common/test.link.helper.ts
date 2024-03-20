@@ -2,6 +2,8 @@ import { TestInfo } from "@playwright/test";
 import { TestLinkApiClient } from "core.api/clients/controllers/testlink.controller";
 import { validateStatusCode } from "core.api/utils/assertions";
 import { TestLinkConfig } from "playwright.config";
+import { writeFileSync } from 'fs';
+import { table } from 'table';
 
 export class TestLinkHelper {
     constructor() { }
@@ -11,6 +13,8 @@ export class TestLinkHelper {
     public static testPlan: { name: string, id: string, api_key: string };
 
     public static build: { name: string, id: string };
+
+    public static testLinkStatisticsFilePath = `./TestLinkIntegrationResults.txt`;
 
     public static totalInfo: [{
         TestCaseName: string,
@@ -205,7 +209,7 @@ export class TestLinkHelper {
     }
 
     public static printTotalInfo(): void {
-        console.debug(`TestLink Total Info:`);
+        console.debug('TestLink Total Info:');
         const flattenedData = this.totalInfo.map((info) => {
             return {
                 TestCaseName: info.TestCaseName,
@@ -217,6 +221,15 @@ export class TestLinkHelper {
                 ErrorMessage: info.ErrorMessage
             }
         });
-        console.table(flattenedData);
+
+        let output = ` === Test Project: '${this.testProject.name}', Test Plan: '${this.testPlan.name}', Build: '${this.build.name}' ===\n`;
+        let tableData = [['Test Case Name', 'Status', 'Test Project Id', 'Test Plan Id', 'Build Id', 'Test Case Id','Error Message']];
+        tableData = [...tableData, ...flattenedData.map(Object.values)];
+
+        output += table(tableData);
+        output += '\n';
+        console.debug(output);
+
+        writeFileSync(TestLinkHelper.testLinkStatisticsFilePath, output, { flag: 'a' });
     }
 }

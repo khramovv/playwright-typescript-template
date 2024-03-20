@@ -4,3 +4,4 @@ node_modules/
 /playwright-report/
 /scenarios/
 /playwright/.cache/
+TestLinkIntegrationResults.txt

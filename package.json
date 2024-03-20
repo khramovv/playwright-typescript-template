@@ -24,6 +24,7 @@
     "@playwright/test": "^1.41.1",
     "@reportportal/agent-js-playwright": "^5.1.6",
     "@types/node": "^20.11.14",
+    "table": "^6.8.1",
     "ts-node": "^10.9.2"
   }
 }
